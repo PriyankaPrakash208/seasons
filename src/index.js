@@ -5,14 +5,8 @@ import SeasonDisplay from './SeasonDisplay';
 
 
 class App extends React.Component{
-
-    constructor(props){
-        super(props);
-        //THIS IS THE ONLY TIME WE  DO A DIRECT ASSIGNMENT TO THIS.STATE
-        this.state = {lat: null, long: null, errorMessage:''};
-
-      
-    }
+    //This is the only time we directly assign state bcs here we are defining state 
+    state = {lat: null, long: null, errorMessage:''};
 
     componentDidMount(){
         window.navigator.geolocation.getCurrentPosition(
@@ -20,12 +14,13 @@ class App extends React.Component{
             err      => this.setState({ errorMessage:err.message})
         );
     }
+    
     componentDidUpdate(){
         console.log("My component updated- it  just rerenderd");
     }
 
     //React says we have to define render
-    render(){
+    render(){ 
         if(this.state.errorMessage && !this.state.lat){
             return(
                 <div>Error    : {this.state.errorMessage} </div>
@@ -33,7 +28,8 @@ class App extends React.Component{
         }
         if(!this.state.errorMessage && this.state.lat){
             return(
-                <div> Latitude : {this.state.lat} <br/> Longitude : {this.state.long} </div>
+                //Here lat is a property of the component seasondisplay which assigns value of state lat
+                <div> <SeasonDisplay lat={this.state.lat} /> </div>
                
             );
         }
